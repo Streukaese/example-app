@@ -6,6 +6,7 @@ use App\Models\Job;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreJobRequest;
 use App\Http\Requests\UpdateJobRequest;
+use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
@@ -14,6 +15,8 @@ class JobController extends Controller
      */
     public function index()
     {
+        $jobs = Job::all();
+        return view('jobs.index', compact('jobs'));
         //
     }
 

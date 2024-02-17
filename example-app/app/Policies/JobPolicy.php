@@ -21,7 +21,8 @@ class JobPolicy
      */
     public function view(User $user, Job $job): bool
     {
-        //
+        // Den <user> immer den Job anzeigen
+        return true;
     }
 
     /**

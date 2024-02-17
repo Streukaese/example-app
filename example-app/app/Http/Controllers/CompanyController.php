@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
@@ -15,6 +16,8 @@ class CompanyController extends Controller
     public function index()
     {
         //
+        $companies = Company::all();
+        return view('companies.index', compact('companies'));
     }
 
     /**
@@ -23,6 +26,7 @@ class CompanyController extends Controller
     public function create()
     {
         //
+        return view('companies.create');
     }
 
     /**
@@ -31,6 +35,17 @@ class CompanyController extends Controller
     public function store(StoreCompanyRequest $request)
     {
         //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'location' => 'nullable|string|max:255',
+            'founded_at' => 'nullable|date',
+            // Add validation rules for other fields here
+        ]);
+
+        Company::create($request->all());
+
+        return redirect()->route('companies.indes')->with('succes', 'Company created successfully.');
     }
 
     /**
@@ -39,6 +54,7 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         //
+        return view('companies.show', compact('company'));
     }
 
     /**
@@ -47,6 +63,7 @@ class CompanyController extends Controller
     public function edit(Company $company)
     {
         //
+        return view('companies.edit', compact('company'));
     }
 
     /**
@@ -55,6 +72,17 @@ class CompanyController extends Controller
     public function update(UpdateCompanyRequest $request, Company $company)
     {
         //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'location' => 'nullable|string|max:255',
+            'founded_at' => 'nullable|date',
+            // Add validation rules for other fields here
+        ]);
+
+        $company->update($request->all());
+
+        return redirect()->route('companies.index')->with('succes', 'Company updated successfully.');
     }
 
     /**
@@ -63,5 +91,8 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         //
+        $company->delete();
+
+        return redirect()->route('companies.index')->with('succes', 'Company deleted successfully.');
     }
 }
