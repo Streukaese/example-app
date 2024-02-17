@@ -4,9 +4,17 @@
 <link rel="stylesheet" href="/app.css">
 
 <body>
-    <?php foreach ($posts as $post): ?>
+    <?php foreach ($jobs as $job): ?>
         <article>
-            <?= $post; ?>
+            <h1>
+                <a href="/jobs/<?= $job->slug; ?>">    
+                    <? $job->title; ?>
+                </a>
+            </h1>
+
+            <div>
+                <?= $jobs->description; ?>
+            </div>
         </article>
     <?php endforeach; ?>
 </body>

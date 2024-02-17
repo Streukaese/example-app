@@ -3,26 +3,47 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\File;
+use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 
 // use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Database\Eloquent\Model;
 
-class Job {
+class Job 
+{
+    public $title;
+    public $description;
+    public $location;
+    public $salary;
+    public $companyId;
+    public $slug;
+    public function __construct($title, $description, $location, $salary, $companyId, $slug)
+     {
+        $this->title = $title;
+        $this->description = $description;
+        $this->location = $location;
+        $this->salary = $salary;
+        $this->companyId = $companyId;
+        $this->slug = $slug;
+    }
+
     public static function all() 
     {
-        $files =  File::files(resource_path("jobs/"));
-        
-        return array_map(fn($file) => $file->getContents(), $files);
+        return collect(File::files(resource_path("jobs")))
+            ->map(fn($file) => YamlFrontMatter::parseFile($file))
+            ->map(fn($documents) => new Job(
+            $documents->title,
+            $documents->description,
+            $documents->location,
+            $documents->salary,
+            $documents->companyId,
+            $documents->slug
+    ));
     }
 
     public static function find($slug) 
     {
-        if(! file_exists($path = resource_path("jobs/{$slug}.html"))) {
-            throw new ModelNotFoundException();
-        }
-
-        return cache()->remember("jobs.{$slug}", 1200, fn () => file_get_contents($path));
+        return static::all()->firstWhere('slug', $slug);
     }
 }
 
