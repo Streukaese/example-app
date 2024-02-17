@@ -15,23 +15,19 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\CompanyController;
+use App\Models\Job;
 
 Route::get('/', function () {
-    return view('jobs');
+    return view('jobs', [
+        'jobs' => Job::all()
+    ]);
 });
+
 Route::get('jobs/{job}', function ($slug) {
-    if(! file_exists($path = file_get_contents(__DIR__ . "/../resources/jobs/{$slug}.html"))) {
-        return redirect('/');
-    }
+    return view('job', [
+        'job' => Job::find($slug)
+    ]);
 
-    // $job = cache()->remember("jobs.{$slug}", 1200, function () use ($path) {
-        // var_dump('file_get_contents');
-        // return file_get_contents($path);
-    // });
-    $job = cache()->remember("jobs.{$slug}", 1200, fn () => file_get_contents($path));
-
-
-    return view('job', ['job' => $job]);
 })->where('job', '[A-z_\-]+');
 
 Route::get('/jobs', [JobController::class, 'show'])->name('jobs.index');    
