@@ -22,6 +22,8 @@ Route::get('/', function () {
 Route::get('jobs/{job}', function ($slug) {
     $path = file_get_contents(__DIR__ . "/../resources/jobs/{$slug}.html");
 
+    ddd($path);
+
     if(! file_exists($path)) {
         return redirect('/');
     //  abort(404);
@@ -32,7 +34,7 @@ Route::get('jobs/{job}', function ($slug) {
     return view('job', [
         'job' => $job
     ]);
-});
+})->whereAlpha('post');
 
 Route::get('/jobs', [JobController::class, 'show'])->name('jobs.index');    
 Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
