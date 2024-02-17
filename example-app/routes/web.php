@@ -20,21 +20,19 @@ Route::get('/', function () {
     return view('jobs');
 });
 Route::get('jobs/{job}', function ($slug) {
-    $path = file_get_contents(__DIR__ . "/../resources/jobs/{$slug}.html");
-
-    ddd($path);
-
-    if(! file_exists($path)) {
+    if(! file_exists($path = file_get_contents(__DIR__ . "/../resources/jobs/{$slug}.html"))) {
         return redirect('/');
-    //  abort(404);
     }
 
-    $job = file_get_contents($path);
+    // $job = cache()->remember("jobs.{$slug}", 1200, function () use ($path) {
+        // var_dump('file_get_contents');
+        // return file_get_contents($path);
+    // });
+    $job = cache()->remember("jobs.{$slug}", 1200, fn () => file_get_contents($path));
 
-    return view('job', [
-        'job' => $job
-    ]);
-})->whereAlpha('post');
+
+    return view('job', ['job' => $job]);
+})->where('job', '[A-z_\-]+');
 
 Route::get('/jobs', [JobController::class, 'show'])->name('jobs.index');    
 Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
