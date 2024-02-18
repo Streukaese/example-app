@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->string('location');
-            $table->decimal('salary', 8, 2);
-            $table->foreignId('companyId')->constrained()->onDelete('cascade');
+            $table->string('adress');
+            $table->decimal('salary', 7, 2);
+            $table->decimal('phoneNumber', 12, 0);
+            $table->foreignId('companies_id');
+            $table->foreignId('categories_id');
             $table->timestamps();
         });
-    }
-
+    }    
     /**
      * Reverse the migrations.
      */

@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('location')->nullable();
-            $table->date('foundedAt')->nullable();
+            $table->text('description');
+            $table->string('location');
+            $table->decimal('phoneNumber', 12, 0);
+            $table->date('foundedAt');
             $table->timestamps();
         });
     }
