@@ -29,20 +29,24 @@ class Job
 
     public static function all() 
     {
-        return collect(File::files(resource_path("jobs")))
-            ->map(fn($file) => YamlFrontMatter::parseFile($file))
+        return cache()->rememberForever('posts.all', function () {
+            return collect(File::files(resource_path("jobs")))
+            ->map(fn($file) => YamlFrontMatter::parseFile($file)) //->sortBy('date')->sort()->sortByDesc('date')
             ->map(fn($documents) => new Job(
             $documents->title,
             $documents->description,
             $documents->location,
             $documents->salary,
-            $documents->companyId,
+            $documents->body(), // companyId
             $documents->slug
-    ));
+            ))
+        ->sortByDesc('date');
+    });
     }
 
     public static function find($slug) 
     {
+        // angefragte slug (seite/stellenanzeige) suchen
         return static::all()->firstWhere('slug', $slug);
     }
 }
