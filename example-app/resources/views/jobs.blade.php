@@ -4,17 +4,18 @@
 <link rel="stylesheet" href="/app.css">
 
 <body>
-    <?php foreach ($jobs as $job): ?>
-        <article>
-            <h1>
-                <a href="/jobs/<?= $job->slug; ?>">    
-                    <? $job->title; ?>
+    @foreach ($jobs as $job)
+        <article class="{{ $loop->even ? 'foobar' : '' }}">
+            <h1>                
+                <a href="/jobs/{{ $job->slug }}">    
+                    {{ $job->title }}
                 </a>
             </h1>
 
             <div>
-                <?= $jobs->description; ?>
+                {{ $job->description }}
+                <!-- <?= $jobs->description; ?> -->
             </div>
         </article>
-    <?php endforeach; ?>
+    @endforeach;
 </body>

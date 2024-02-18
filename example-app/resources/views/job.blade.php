@@ -4,10 +4,11 @@
 <link rel="stylesheet" href="/app.css">
 
 <body>
-    <article>
-        <h1><?= $job->title; ?></h1>
+    <article> <!-- <?= $job->title; ?> -->
+        <h1>{ $job->title }</h1>
         <div>
-            <?= $job ->description; ?>
+            {!! $job->body !!}
+           <!-- <?= $job ->description; ?> -->
         </div>
     </article>
 
