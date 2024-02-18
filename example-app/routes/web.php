@@ -26,10 +26,10 @@ Route::get('/', function () {
 
 Route::get('jobs/{job}', function ($slug) {
     return view('job', [
-        'job' => Job::find($slug)
+        'job' => Job::findOrFail($slug)
     ]);
 
-})->where('job', '[A-z_\-]+');
+})
 
 
 

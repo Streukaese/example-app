@@ -1,9 +1,6 @@
-<!doctype html>
+@extends ('layout')
 
-<title>Job</title>
-<link rel="stylesheet" href="/app.css">
-
-<body>
+<x-layout>
     @foreach ($jobs as $job)
         <article class="{{ $loop->even ? 'foobar' : '' }}">
             <h1>                
@@ -11,11 +8,10 @@
                     {{ $job->title }}
                 </a>
             </h1>
-
             <div>
                 {{ $job->description }}
                 <!-- <?= $jobs->description; ?> -->
             </div>
         </article>
     @endforeach;
-</body>
+</x-layout>

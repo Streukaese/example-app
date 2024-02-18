@@ -46,9 +46,21 @@ class Job
 
     public static function find($slug) 
     {
-        // angefragte slug (seite/stellenanzeige) suchen
+        
         return static::all()->firstWhere('slug', $slug);
+
     }
+
+    public static function findOrFail ($slug) 
+{
+    // angefragte slug (seite/stellenanzeige) suchen
+    $job = static::find($slug);
+    
+    if(! $job) {
+        throw new ModelNotFoundException();
+    }
+    return $job;
+}
 }
 
 // class Job extends Model
